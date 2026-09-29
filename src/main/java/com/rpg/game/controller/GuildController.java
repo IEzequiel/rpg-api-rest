@@ -20,4 +20,11 @@ public class GuildController {
     public List<Character> getMembers() {
         return guildService.getMembersList();
     }
+
+    @GetMapping("/members/{name}")
+    public Character getMemberByName(@PathVariable String name) {
+            return guildService.findByName(name)
+                .orElse(null); // Si lo encuentra devuelve el personaje; si no, devuelve null (Spring lo responderá vacío)
+}
+
 }
