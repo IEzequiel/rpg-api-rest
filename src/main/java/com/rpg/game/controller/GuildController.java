@@ -1,7 +1,8 @@
 package com.rpg.game.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.rpg.game.service.Guild;
+import com.rpg.game.service.GuildService;
 import com.rpg.game.model.Character;
 import java.util.List;
 
@@ -9,10 +10,10 @@ import java.util.List;
 @RequestMapping("/api/guild") // Ruta base de la URL
 public class GuildController {
 
-    private final Guild guildService;
+    private final GuildService guildService;
 
     // Inyección de dependencias por constructor
-    public GuildController(Guild guildService) {
+    public GuildController(GuildService guildService) {
         this.guildService = guildService;
     }
 
@@ -22,9 +23,10 @@ public class GuildController {
     }
 
     @GetMapping("/members/{name}")
-    public Character getMemberByName(@PathVariable String name) {
+    public ResponseEntity <Character> getMemberByName(@PathVariable String name) {
             return guildService.findByName(name)
-                .orElse(null); // Si lo encuentra devuelve el personaje; si no, devuelve null (Spring lo responderá vacío)
-}
+                    .map(ResponseEntity::ok) //Si ok, respuesta 200 con personaje
+                     .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 }

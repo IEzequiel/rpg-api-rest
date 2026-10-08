@@ -7,13 +7,14 @@ import com.rpg.game.model.Mage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Comparator;
 
 @Service // <-- Le dice a Spring que esta clase maneja la lógica de negocio
-public class Guild {
+public class GuildService {
     private final List<Character> members = new ArrayList<>();
 
     // Constructor: filling with test members
-    public Guild() {
+    public GuildService() {
         this.members.add(new Warrior("Aragorn"));
         this.members.add(new Mage("Gandalf"));
     }
@@ -31,6 +32,11 @@ public class Guild {
     //GET Search member by Name
     public Optional<Character> findByName(String name){
         return this.members.stream().filter(member -> member.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    //GET get strongest member
+    public Optional<Character> getStrongestMember(){
+        return this.members.stream().max(Comparator.comparingInt(Character::getStrength));
     }
 
     
