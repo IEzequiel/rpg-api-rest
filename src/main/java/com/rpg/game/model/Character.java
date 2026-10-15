@@ -7,94 +7,77 @@ package com.rpg.game.model;
         private int life;
         private int maxLife;                                                                                                                                                                                            
         private int strength;  
-        private int damage;                                                                                                                                                                                      
+        private int damage;
+        private final int initialLevel = 1;                                                                                                                                                                                      
                                                                                                                                                                                                                      
         // Constructor                                                                                                                                                                                               
-        public Character(String name) {                                                                                                                                                                              
-            this.setName(name);                                                                                                                                                                                      
-            this.setLevel(1);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        public Character(String name,int maxLife,int strength,int damage) {                                                                                                                                                                              
+            this.name = validateName(name);                                                                                                                                                                                      
+            this.level= initialLevel;
+            this.maxLife = validatePositiveNumber(maxLife);
+            this.life = maxLife; 
+            this.strength = validatePositiveNumber(strength);
+            this.damage = validatePositiveNumber(damage);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
         }                           
         
-        //Maxlife needs to be seeting after the creation of the character.
-        //We use this variable to have a reference to prevent, for example
-        //an overhealing from Mage
+        //Validation for stats like maxLife,Strength...
+        private int validatePositiveNumber(int stat) {
+            if(stat < 0){
+                throw new IllegalArgumentException("Invalid stat"); 
+            }
+            return stat;
+        }
         
-                                                                                                                                                                                                                     
-        // Getters and Setters                                                                                                                                                                                       
+        //Name validation
+        private String validateName(String name) {
+            if (name == null || name.trim().isEmpty())
+                {
+                    throw new IllegalArgumentException("Invalid name"); 
+                }
+            return name.trim();
+        }
+
+        // Getters                                                                                                                                                                                       
         public String getName() {                                                                                                                                                                                    
             return name;                                                                                                                                                                                             
         }                                                                                                                                                                                                            
-                                                                                                                                                                                                                     
-        private void setName(String name) {                                                                                                                                                                           
-            this.name = name;                                                                                                                                                                                        
-        }                                                                                                                                                                                                            
-                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
         public int getLevel() {                                                                                                                                                                                      
             return level;                                                                                                                                                                                            
         }                                                                                                                                                                                                            
-                                                                                                                                                                                                                     
-        public void setLevel(int level) {                                                                                                                                                                            
-            if (level > 0) {                                                                                                                                                                                         
-                this.level = level;                                                                                                                                                                                  
-            }                                                                                                                                                                                                        
-        }                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                                                                                                                                              
                                                                                                                                                                                                                      
         public int getLife() {                                                                                                                                                                                       
             return life;                                                                                                                                                                                             
         }                                                                                                                                                                                                            
-                                                                                                                                                                                                                     
-        public void setLife(int life) { 
-            //validating the initial number on creation                                                                                                                                                                          
-            if (life >= 0) {                                                                                                                                                                                         
-                this.life = life;                                                                                                                                                                                    
-            }                                                                                                                                                                                                        
-        }   
-        
+                                                                                                                                                                                                                       
         public int getMaxLife (){
             return this.maxLife;
         }
-
-        public void setMaxLife(int maxLife) {
-            this.maxLife = maxLife;
-        }
-                                                                                                                                                                                                                     
+                                                                                                                                                                                                                             
         public int getStrength() {                                                                                                                                                                                   
             return strength;                                                                                                                                                                                         
         }                                                                                                                                                                                                            
                                                                                                                                                                                                                      
-        public void setStrength(int strength) {                                                                                                                                                                      
-            if (strength >= 0) {                                                                                                                                                                                     
-                this.strength = strength;                                                                                                                                                                            
-            }                                                                                                                                                                                                        
-        }     
-        
         public int getDamage() {
         return damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
+        }
                                                                                                                                                                                                                      
         // Method to return stats                                                                                                                                                                                   
         public String getStats() {                                                                                                                                                                                     
-            return ("The hero " + name + " is level " + level + " with " + life + " HP and " + strength + " strength.");                                                                                  
+            return ("The hero " + this.name + " is level " + this.level + " with " + this.life + " HP and " + this.strength + " strength.");                                                                                  
         }
         
-        public abstract void attack (Character target);
-
         //Method to simulate the attack from one character to another
         public void receiveDamage(int damage) {
             //Validate life before took damage. If it's less or equal damage, goes to 0.
-            this.setLife(Math.max(0,(this.life - damage)));
-
-            //Worst logic, simplified by Math.max
-            /* if (this.life <= damage){
-                this.setLife(0);
-            } else {
-                this.setLife(this.life - damage);
-            } */
+            this.life=(Math.max(0,(this.life - damage)));
         }
 
-    
+        public abstract void attack (Character target);
+
+        public void recoverLife(int life) {
+            this.life = life;
+        }
+
     }
