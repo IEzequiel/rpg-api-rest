@@ -22,11 +22,27 @@ public class GuildController {
         return guildService.getMembersList();
     }
 
+    @GetMapping("/members/strongest")
+    public ResponseEntity<Character> getStrongestMember() {
+        return guildService.getStrongestMember()
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/members/{name}")
     public ResponseEntity <Character> getMemberByName(@PathVariable String name) {
             return guildService.findByName(name)
                     .map(ResponseEntity::ok) //Si ok, respuesta 200 con personaje
                      .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/members")
+    public ResponseEntity<Character> addMember(@RequestBody com.rpg.game.dto.CharacterCreationDTO request) {
+        Character createdCharacter = guildService.createCharacter(request);
+        
+        // Retornamos HTTP 201 Created junto con el objeto creado
+        return ResponseEntity.status(org.springframework.http.HttpStatus.CREATED)
+                .body(createdCharacter);
     }
 
 }

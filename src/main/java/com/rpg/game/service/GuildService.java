@@ -39,6 +39,20 @@ public class GuildService {
         return this.members.stream().max(Comparator.comparingInt(Character::getStrength));
     }
 
+    //Create new character
+    public Character createCharacter(com.rpg.game.dto.CharacterCreationDTO request) {
+    Character newCharacter;
     
+    // Validamos el tipo de héroe que quiere crear el usuario
+    if ("mage".equalsIgnoreCase(request.type())) {
+        newCharacter = new Mage(request.name());
+    } else {
+        // Por defecto o si es warrior
+        newCharacter = new Warrior(request.name());
+    }
+    
+    this.members.add(newCharacter);
+    return newCharacter;
+        }
 
 }

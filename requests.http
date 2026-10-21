@@ -1,0 +1,23 @@
+### 1. Obtener todos los miembros iniciales
+GET http://localhost:8080/api/guild/members
+
+### 2. Crear un nuevo Guerrero (Legolas)
+POST http://localhost:8080/api/guild/members
+Content-Type: application/json
+
+{
+  "name": "Legolas",
+  "type": "warrior"
+}
+
+### 3. Crear un nuevo Mago (Gimli o Gandalf secundario)
+POST http://localhost:8080/api/guild/members
+Content-Type: application/json
+
+{
+  "name": "Saruman",
+  "type": "mage"
+}
+
+### 4. Buscar al miembro más fuerte actualizado
+GET http://localhost:8080/api/guild/members/strongest
