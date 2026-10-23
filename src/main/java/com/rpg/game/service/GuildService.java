@@ -41,18 +41,31 @@ public class GuildService {
 
     //Create new character
     public Character createCharacter(com.rpg.game.dto.CharacterCreationDTO request) {
-    Character newCharacter;
+        Character newCharacter;
     
-    // Validamos el tipo de héroe que quiere crear el usuario
-    if ("mage".equalsIgnoreCase(request.type())) {
+        // Validamos el tipo de héroe que quiere crear el usuario
+        if ("mage".equalsIgnoreCase(request.type())) {
         newCharacter = new Mage(request.name());
-    } else {
+        } else {
         // Por defecto o si es warrior
         newCharacter = new Warrior(request.name());
-    }
-    
-    this.members.add(newCharacter);
-    return newCharacter;
         }
+    
+        this.members.add(newCharacter);
+        return newCharacter;
+    }
+
+    //Updating character stats
+    public Optional<Character> updateCharacter(String name, com.rpg.game.dto.CharacterUpdateDTO dto) {
+    return findByName(name).map(character -> {
+        character.updateStats(dto.level(), dto.strength());
+        return character;
+    });
+    }
+
+    //Deleting a character from the Guild
+    public boolean deleteCharacter (String name){
+        return this.members.removeIf(member -> member.getName().equalsIgnoreCase(name));
+    }
 
 }

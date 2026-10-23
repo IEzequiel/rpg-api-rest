@@ -80,4 +80,13 @@ package com.rpg.game.model;
             this.life = life;
         }
 
+        // Dentro de Character.java
+        public void updateStats(int newLevel, int newStrength) {    
+            if (newLevel <= 0 || newStrength <= 0) {
+                throw new IllegalArgumentException("El nivel y la fuerza deben ser mayores a cero.");
+                }
+            this.level = newLevel;
+            this.strength = newStrength;
+}
+
     }

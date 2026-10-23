@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.*;
 import com.rpg.game.service.GuildService;
 import com.rpg.game.model.Character;
 import java.util.List;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController // Indica que responderá en formato JSON
 @RequestMapping("/api/guild") // Ruta base de la URL
@@ -43,6 +47,26 @@ public class GuildController {
         // Retornamos HTTP 201 Created junto con el objeto creado
         return ResponseEntity.status(org.springframework.http.HttpStatus.CREATED)
                 .body(createdCharacter);
+    }
+
+    @PutMapping("/members/{name}")
+    public ResponseEntity<Character> updateMember (@PathVariable String name, @RequestBody com.rpg.game.dto.CharacterUpdateDTO request) {
+                
+        return guildService.updateCharacter(name, request)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping ("/members/{name}")
+    public ResponseEntity <Void> removeMember (@PathVariable String name){
+        boolean deleted = guildService.deleteCharacter(name);
+
+        if (deleted){
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 }

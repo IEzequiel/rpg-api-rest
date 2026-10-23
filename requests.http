@@ -10,7 +10,7 @@ Content-Type: application/json
   "type": "warrior"
 }
 
-### 3. Crear un nuevo Mago (Gimli o Gandalf secundario)
+### 3. Crear un nuevo Mago (Saruman o Gandalf secundario)
 POST http://localhost:8080/api/guild/members
 Content-Type: application/json
 
@@ -21,3 +21,15 @@ Content-Type: application/json
 
 ### 4. Buscar al miembro más fuerte actualizado
 GET http://localhost:8080/api/guild/members/strongest
+
+### 5. Actualizar los stats de un personaje existente (Ej: Aragorn)
+PUT http://localhost:8080/api/guild/members/Aragorn
+Content-Type: application/json
+
+{
+  "level": 2,
+  "strength": 110
+}
+
+### 6. Eliminar un personaje por su nombre
+DELETE http://localhost:8080/api/guild/members/Legolas
