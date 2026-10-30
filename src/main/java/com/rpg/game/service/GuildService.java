@@ -41,8 +41,16 @@ public class GuildService {
 
     //Create new character
     public Character createCharacter(com.rpg.game.dto.CharacterCreationDTO request) {
+        
+        // Validar si ya existe un personaje con ese nombre (case insensitive)
+            boolean exists = this.members.stream()
+            .anyMatch(member -> member.getName().equalsIgnoreCase(request.name()));
+
+            if (exists) {
+             throw new IllegalArgumentException("Ya existe un personaje registrado con el nombre: " + request.name());
+            }
+
         Character newCharacter;
-    
         // Validamos el tipo de héroe que quiere crear el usuario
         if ("mage".equalsIgnoreCase(request.type())) {
         newCharacter = new Mage(request.name());
